@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map, first } from 'rxjs/operators';
+import { Observable, empty } from 'rxjs';
+import { map, first, switchMap } from 'rxjs/operators';
 
 import { ServiceService } from '../service.service';
 import { Chapter, BookListItem, Verse, Reference } from '../interfaces';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-bible',
@@ -18,7 +19,10 @@ export class BiblePage implements OnInit {
   selectedVerses: Verse[] = [];
   selectedBook = 'Psalms';
 
-  constructor(public service: ServiceService) {}
+  constructor(
+    public service: ServiceService,
+    public alert: AlertController
+  ) {}
 
   ngOnInit() {
     this.read(this.selectedBook);
@@ -58,8 +62,25 @@ export class BiblePage implements OnInit {
   }
 
   sendVerses() {
-    this.service.sendVerses(this.mapToReference());
-    this.resetVerses();
+    this.service.user.pipe(first()).subscribe(user => {
+      if (user && user.email) {
+        this.service.sendVerses(this.mapToReference());
+        this.resetVerses();
+        this.alert
+          .create({message: 'Passagem gravada com sucesso', buttons: ['OK']})
+          .then(alert => alert.present());
+        return null;
+      }
+      this.alert
+        .create({
+          message: 'Para salvar passagens você precisa estar logado',
+          buttons: ['Login']
+        })
+        .then(alert => {
+          alert.present();
+          alert.onDidDismiss().then(_ => this.service.login());
+        });
+    });
   }
 
   sortVerses(curr: Verse, prev: Verse): number {
