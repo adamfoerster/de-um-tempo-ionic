@@ -4,17 +4,18 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'timeline',
     pathMatch: 'full'
   },
   {
-    path: 'home',
-    loadChildren: './home/home.module#HomePageModule'
+    path: 'timeline',
+    loadChildren: './timeline/timeline.module#TimelinePageModule'
   },
   {
-    path: 'list',
-    loadChildren: './list/list.module#ListPageModule'
-  }
+    path: 'bible',
+    loadChildren: './bible/bible.module#BiblePageModule'
+  },
+  { path: 'passages', loadChildren: './passages/passages.module#PassagesPageModule' }
 ];
 
 @NgModule({

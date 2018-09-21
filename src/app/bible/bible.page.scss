@@ -1,0 +1,33 @@
+.card-content span {
+  text-justify: distribute;
+  padding: 8px 8px;
+  line-height: 2em;
+  margin: 0.2em 0;
+  cursor: pointer;
+}
+.selected {
+  background-color: #cfc;
+  border-radius: 5px;
+}
+
+.versearea {
+  height: calc(100vh - 120px);
+  overflow: auto;
+}
+
+.versecontainer {
+  display: fixed;
+  position: relative;
+  height: calc(100vh - 60px);
+  overflow: auto;
+}
+
+.selected-verses {
+  position: absolute;
+  top: 60px;
+  padding: 10px;
+  width: 50vw;
+  text-align: center;
+  margin: 0 25vw;
+  background-color: rgba(204, 255, 204, 0.605);
+}

@@ -1,8 +1,10 @@
+import { ServiceService } from './service.service';
 import { Component } from '@angular/core';
 
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -11,21 +13,28 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 export class AppComponent {
   public appPages = [
     {
-      title: 'Home',
-      url: '/home',
+      title: 'Timeline',
+      url: '/timeline',
       icon: 'home'
     },
     {
-      title: 'List',
-      url: '/list',
-      icon: 'list'
+      title: 'Bíblia',
+      url: '/bible',
+      icon: 'journal'
+    },
+    {
+      title: 'Passagens',
+      url: '/passages',
+      icon: 'list-box'
     }
   ];
+  user: Observable<any>;
 
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    public service: ServiceService
   ) {
     this.initializeApp();
   }
@@ -34,6 +43,15 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.user = this.service.user;
     });
+  }
+
+  login() {
+    this.service.login();
+  }
+
+  logout() {
+    this.service.logout();
   }
 }

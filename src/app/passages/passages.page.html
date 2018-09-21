@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Passagens</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-card *ngFor="let passage of (reference$|async)?.references">
+    <ion-card-header>
+      <ion-card-title>{{passage.book}} {{passage.chapter}}</ion-card-title>
+      <ion-card-subtitle>
+        <ion-buttons>
+          <ion-button>
+            <ion-icon name="trash"></ion-icon>Remover
+          </ion-button>
+          <ion-button>
+            <ion-icon name="quote"></ion-icon>Comentar
+          </ion-button>
+        </ion-buttons>
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content [innerHTML]="passage.reference"></ion-card-content>
+  </ion-card>
+</ion-content>

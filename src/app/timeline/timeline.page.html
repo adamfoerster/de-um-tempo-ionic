@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Timeline</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding>
+  <div *ngFor="let meeting of meeting$ | async"
+    class="timecont">
+    <ion-card class="example-card">
+      <ion-img [src]="meeting.photo"></ion-img>
+      <ion-card-header>
+        <ion-card-title>{{meeting.id}}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p [innerHTML]="meeting.message"></p>
+        <app-music [id]="meeting.songId"></app-music>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

@@ -5,9 +5,16 @@ import { RouterModule, RouteReuseStrategy, Routes } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
+import { JsonpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,7 +22,15 @@ import { AppRoutingModule } from './app-routing.module';
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    AppRoutingModule
+    AppRoutingModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    // AngularFirestoreModule.enablePersistence(),
+    AngularFirestoreModule,
+    AngularFireStorageModule,
+    AngularFireAuthModule,
+    HttpClientModule,
+    HttpClientJsonpModule,
+    JsonpModule,
   ],
   providers: [
     StatusBar,
