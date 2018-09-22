@@ -15,6 +15,7 @@ import { JsonpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { environment } from '../environments/environment';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,6 +32,7 @@ import { environment } from '../environments/environment';
     HttpClientModule,
     HttpClientJsonpModule,
     JsonpModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
     StatusBar,
