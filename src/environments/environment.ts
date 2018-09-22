@@ -1,5 +1,5 @@
 export const environment = {
-  production: true,
+  production: false,
   firebase: {
     apiKey: 'AIzaSyDN9PKe08IDHnL5ea_ZIw9SQWPsGPot1xc',
     authDomain: 'de-um-tempo.firebaseapp.com',
@@ -9,6 +9,6 @@ export const environment = {
     messagingSenderId: '475759243077'
   },
   bible: {
-    host: 'https://getbible.net/json?v=almeida&p='
+    host: 'http://getbible.net/json?v=almeida&p='
   }
 };
