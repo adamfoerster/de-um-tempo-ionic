@@ -253,10 +253,11 @@ export class ServiceService {
   }
 
   login() {
-    this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider());
+    this.afAuth.auth.signInWithRedirect(new auth.GoogleAuthProvider());
   }
 
   logout() {
     this.afAuth.auth.signOut();
+    window.location.reload();
   }
 }

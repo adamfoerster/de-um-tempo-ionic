@@ -7,8 +7,16 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-  <ion-card *ngFor="let passage of (reference$|async)?.references"
+<ion-content padding
+  *ngIf="(reference$|async) as refs">
+  <ion-card mode="ios" *ngIf="!refs.references.length">
+    <ion-card-content>
+      Você ainda não tem nenhuma passagem armazenada. Vá até a <a [routerLink]="['/bible']">Bíblia</a>
+      e clique sobre uma passagem para selecioná-la. Depois clique em <ion-icon name="add-circle"></ion-icon> para
+      gravá-la.
+    </ion-card-content>
+  </ion-card>
+  <ion-card *ngFor="let passage of refs.references"
     mode="ios">
     <ion-card-header>
       <ion-card-title>{{passage.book}} {{passage.chapter}}</ion-card-title>
@@ -29,5 +37,12 @@
         </ion-button>
       </ion-buttons>
     </ion-item>
+  </ion-card>
+</ion-content>
+<ion-content *ngIf="!(reference$|async)">
+  <ion-card mode="ios">
+    <ion-card-content>
+      Você não está logado. Clique no link <ion-icon name="log-in"></ion-icon> Login no menu ao lado.
+    </ion-card-content>
   </ion-card>
 </ion-content>

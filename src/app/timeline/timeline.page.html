@@ -6,8 +6,8 @@
     <ion-title>Timeline</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content padding>
-  <div *ngFor="let meeting of meeting$ | async"
+<ion-content *ngIf="meeting$ | async as meetings" padding>
+  <div *ngFor="let meeting of meetings"
     class="timecont">
     <ion-card class="example-card" mode="ios">
       <ion-img [src]="meeting.photo"></ion-img>
@@ -19,5 +19,12 @@
         <app-music [id]="meeting.songId"></app-music>
       </ion-card-content>
     </ion-card>
+  </div>
+</ion-content>
+<ion-content *ngIf="!(meeting$ | async)">
+  <br>
+  <br>
+  <div class="center">
+    <ion-spinner></ion-spinner>
   </div>
 </ion-content>
