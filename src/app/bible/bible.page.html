@@ -5,37 +5,43 @@
     </ion-buttons>
     <ion-title>Bíblia</ion-title>
   </ion-toolbar>
+  <ion-toolbar color="dark" >
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-select #bookinput
+            placeholder="Livro"
+            value="Psalms"
+            class="col70"
+            (ionChange)="selectedChapter=1;read(bookinput.value)">
+            <ion-select-option *ngFor="let book of books"
+              [value]="book.id">
+              {{book.name}}
+            </ion-select-option>
+          </ion-select>
+        </ion-col>
+        <ion-col size="3">
+          <ion-select *ngIf="chapter$|async as chapters"
+            #chapterInput
+            placeholder="Capítulo"
+            [value]="selectedChapter"
+            class="col30"
+            (ionChange)="selectedChapter=$event.detail.value;read(bookinput.value)">
+            <ion-select-option *ngFor="let chapter of chapters"
+              [value]="chapter.chapter_nr">
+              {{chapter.chapter_nr}}
+            </ion-select-option>
+          </ion-select>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
   <div class="versecontainer">
-    <ion-toolbar>
-      <ion-select #bookinput
-        placeholder="Livro"
-        value="Psalms"
-        class="col70"
-        (ionChange)="selectedChapter=1;read(bookinput.value)">
-        <ion-select-option *ngFor="let book of books"
-          [value]="book.id">
-          {{book.name}}
-        </ion-select-option>
-      </ion-select>
-    </ion-toolbar>
-    <ion-toolbar>
-      <ion-select *ngIf="chapter$|async as chapters"
-        #chapterInput
-        placeholder="Capítulo"
-        [value]="selectedChapter"
-        class="col30"
-        (ionChange)="selectedChapter=$event.detail.value;read(bookinput.value)">
-        <ion-select-option *ngFor="let chapter of chapters"
-          [value]="chapter.chapter_nr">
-          {{chapter.chapter_nr}}
-        </ion-select-option>
-      </ion-select>
-    </ion-toolbar>
     <div class="padding versearea">
-      <ion-card *ngIf="(passage$ | async)?.chapter as passage">
+      <ion-card *ngIf="(passage$ | async)?.chapter as passage" mode="ios">
         <ion-card-content>
           <span *ngFor="let verse of passage"
             (click)="select(verse.verse_nr)"

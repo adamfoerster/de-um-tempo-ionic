@@ -18,7 +18,6 @@ npm-debug.log*
 .sass-cache/
 .tmp/
 .versions/
-src/environments/
 coverage/
 www/
 node_modules/
@@ -36,3 +35,7 @@ UserInterfaceState.xcuserstate
 src/environments/environment.ts
 src/environments/environment.prod.ts
 .firebase/hosting.d3d3.cache
+
+*.cache
+
+\.firebase/

@@ -9,10 +9,10 @@
 <ion-content padding>
   <div *ngFor="let meeting of meeting$ | async"
     class="timecont">
-    <ion-card class="example-card">
+    <ion-card class="example-card" mode="ios">
       <ion-img [src]="meeting.photo"></ion-img>
       <ion-card-header>
-        <ion-card-title>{{meeting.id}}</ion-card-title>
+        <ion-card-title>{{makeDate(meeting.id)|date:'dd/MM/yyyy'}}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <p [innerHTML]="meeting.message"></p>

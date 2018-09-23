@@ -13,7 +13,8 @@ import {
   Chapter,
   BookListItem,
   Verse,
-  Reference
+  Reference,
+  FromUser
 } from './interfaces';
 @Injectable({
   providedIn: 'root'
@@ -82,6 +83,7 @@ export class ServiceService {
         .set({ email: user.email, passage: passage });
     });
   }
+
   getBook(bookName): Observable<Book> {
     return this.db
       .collection('books')
@@ -119,32 +121,93 @@ export class ServiceService {
     return chapters.find(chapter => chapter.chapter_nr === chapter_nr);
   }
 
-  getReferencesFromUser(email: string) {
+  getFromUser(email: string): Observable<FromUser> {
     return this.db
       .collection('from-users')
-      .doc(email)
-      .valueChanges()
-      .pipe(first());
+      .doc<FromUser>(email)
+      .valueChanges();
   }
 
   sendVerses(ref: Reference) {
     this.user
       .pipe(
         first(),
-        switchMap(user => this.getReferencesFromUser(user.email))
+        switchMap(user => this.getFromUser(user.email).pipe(first()))
       )
       .subscribe(references => {
-        combineLatest(this.user.pipe(first()), of(references)).subscribe(
-          combo => {
-            const user = combo[0];
-            const refs = combo[1] ? combo[1]['references'] : [];
-            this.db
-              .collection('from-users')
-              .doc(user.email)
-              .set({ email: user.email, references: [...refs, ref] });
-          }
-        );
+        combineLatest(
+          this.user.pipe(first()),
+          of(references).pipe(first())
+        ).subscribe(combo => {
+          const user = combo[0];
+          const refs = combo[1] ? combo[1]['references'] : [];
+          this.db
+            .collection('from-users')
+            .doc(user.email)
+            .set({ email: user.email, references: [...refs, ref] });
+        });
       });
+  }
+
+  removePassage(id) {
+    return this.user.pipe(
+      first(),
+      switchMap(user => {
+        if (!user || !user.email) {
+          return empty();
+        }
+        return combineLatest(
+          of(user).pipe(first()),
+          this.getFromUser(user.email).pipe(first())
+        );
+      }),
+      tap(combo => {
+        this.db
+          .collection('from-users')
+          .doc(combo[0].email)
+          .set(this.pluckPassageFromReference(combo[1], id));
+      })
+    );
+  }
+
+  addCommentToReference(refId: number, comment: string) {
+    return this.user.pipe(
+      first(),
+      switchMap(user => {
+        if (!user || !user.email) {
+          return empty();
+        }
+        return combineLatest(
+          of(user).pipe(first()),
+          this.getFromUser(user.email).pipe(first())
+        );
+      }),
+      tap(combo => {
+        this.db
+          .collection('from-users')
+          .doc(combo[0].email)
+          .set(this.addComment(combo[1], comment, refId));
+      })
+    );
+  }
+
+  addComment(fromUser: FromUser, comment: string, refId: number): FromUser {
+    return {
+      ...fromUser,
+      references: fromUser.references.map(ref => {
+        if (ref.id === refId) {
+          return { ...ref, comment: comment };
+        }
+        return ref;
+      })
+    };
+  }
+
+  pluckPassageFromReference(fromUser: FromUser, id: number): FromUser {
+    return {
+      ...fromUser,
+      references: fromUser.references.filter(ref => ref.id !== id)
+    };
   }
 
   getBooks(): BookListItem[] {

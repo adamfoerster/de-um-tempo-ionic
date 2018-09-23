@@ -6,7 +6,7 @@
   cursor: pointer;
 }
 .selected {
-  background-color: #cfc;
+  background-color: var(--ion-color-secondary);
   border-radius: 5px;
 }
 
@@ -16,9 +16,7 @@
 }
 
 .versecontainer {
-  display: fixed;
   position: relative;
-  height: calc(100vh - 60px);
   overflow: auto;
 }
 

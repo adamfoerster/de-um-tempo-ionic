@@ -30,14 +30,16 @@ export interface Verse {
   verse: string;
 }
 
-export interface Message {
+export interface FromUser {
   email: string;
-  passage: string;
+  references: Reference[];
 }
 
 export interface Reference {
+  id: number;
   reference: string;
   verses: Verse[];
   book: string;
   chapter: number;
+  comment?: string;
 }

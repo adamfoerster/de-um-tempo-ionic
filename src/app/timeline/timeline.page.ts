@@ -16,4 +16,20 @@ export class TimelinePage implements OnInit {
     this.meeting$ = this.service.meeting$;
   }
 
+  makeDate(dateText: string | number) {
+    if (!dateText) {
+      console.log(dateText);
+      return '';
+    }
+    if (typeof dateText === 'number') {
+      dateText = (dateText as number).toString();
+    }
+    const text = [
+      `${dateText.substr(0, 4)}-`,
+      `${dateText.substr(4, 2)}-`,
+      `${dateText.substr(6, 2)}T03:00:00Z`
+    ].join('');
+    return new Date(text);
+  }
+
 }
