@@ -19,10 +19,7 @@ export class BiblePage implements OnInit {
   selectedVerses: Verse[] = [];
   selectedBook = 'Psalms';
 
-  constructor(
-    public service: ServiceService,
-    public alert: AlertController
-  ) {}
+  constructor(public service: ServiceService, public alert: AlertController) {}
 
   ngOnInit() {
     this.read(this.selectedBook);
@@ -67,7 +64,7 @@ export class BiblePage implements OnInit {
         this.service.sendVerses(this.mapToReference());
         this.resetVerses();
         this.alert
-          .create({message: 'Passagem gravada com sucesso', buttons: ['OK']})
+          .create({ message: 'Passagem gravada com sucesso', buttons: ['OK'] })
           .then(alert => alert.present());
         return null;
       }
@@ -93,6 +90,7 @@ export class BiblePage implements OnInit {
   mapToReference(): Reference {
     const verses = this.selectedVerses.sort(this.sortVerses);
     return {
+      id: Math.random() * 16,
       book: this.selectedBook,
       chapter: this.selectedChapter,
       reference: this.versesToText(verses),
