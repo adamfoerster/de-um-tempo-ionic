@@ -6,11 +6,14 @@
     <ion-title>Timeline</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content *ngIf="meeting$ | async as meetings" padding>
+<ion-content *ngIf="meeting$ | async as meetings"
+  padding>
   <div *ngFor="let meeting of meetings"
     class="timecont">
-    <ion-card class="example-card" mode="ios">
-      <ion-img [src]="meeting.photo"></ion-img>
+    <ion-card class="example-card"
+      mode="ios" (deferLoad)="loadImg(meeting.photo)">
+      <ion-img *ngIf="checkImg(meeting.photo)"
+        [src]="meeting.photo"></ion-img>
       <ion-card-header>
         <ion-card-title>{{makeDate(meeting.id)|date:'dd/MM/yyyy'}}</ion-card-title>
       </ion-card-header>

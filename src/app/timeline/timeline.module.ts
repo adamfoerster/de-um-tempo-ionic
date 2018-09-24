@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { TimelinePage } from './timeline.page';
 import { MusicComponent } from './music/music.component';
+import { DeferLoadDirective } from '../defer-load.directive';
 
 const routes: Routes = [
   {
@@ -24,7 +25,8 @@ const routes: Routes = [
   ],
   declarations: [
     TimelinePage,
-    MusicComponent
+    MusicComponent,
+    DeferLoadDirective
   ]
 })
 export class TimelinePageModule {}
