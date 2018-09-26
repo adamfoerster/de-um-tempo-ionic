@@ -1,0 +1,41 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Administração</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content padding
+    *ngIf="(reference$|async) as refs">
+    <ion-card *ngFor="let passage of refs.references"
+      mode="ios">
+      <ion-card-header>
+        <ion-card-title>{{passage.book}} {{passage.chapter}}</ion-card-title>
+        <ion-card-subtitle>{{passage.comment}}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content [innerHTML]="passage.reference"></ion-card-content>
+      <ion-item>
+        <ion-buttons>
+          <ion-button fill="clear"
+            color="danger"
+            (click)="removeReference(passage.id)">
+            <ion-icon name="trash"></ion-icon>Remover&nbsp;
+          </ion-button>
+          <ion-button fill="clear"
+            color="primary"
+            (click)="sendComment(passage.id)">
+            <ion-icon name="quote"></ion-icon>Comentar&nbsp;
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ion-card>
+  </ion-content>
+  <ion-content *ngIf="!(reference$|async)">
+    <ion-card mode="ios">
+      <ion-card-content>
+        Você não está logado. Clique no link <ion-icon name="log-in"></ion-icon> Login no menu ao lado.
+      </ion-card-content>
+    </ion-card>
+  </ion-content>

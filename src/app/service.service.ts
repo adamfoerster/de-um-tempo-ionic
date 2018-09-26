@@ -91,22 +91,25 @@ export class ServiceService {
       .valueChanges()
       .pipe(
         shareReplay(1),
+        switchMap(book => {
+          if (!book) {
+            return this.fetchFromAPI(`${bookName}`).pipe(
+              tap(bookFromAPI => this.saveBookToFireStore(bookFromAPI))
+            );
+          }
+          return of(book);
+        }),
+        tap(book => console.log(book)),
         map(book => this.mapResponseToBook(book))
       );
   }
 
   getChapter(book_name: string, chapter_nr: number): Observable<Chapter> {
     return this.getBook(book_name).pipe(
-      switchMap(book => {
-        if (!book) {
-          return this.fetchFromAPI(`${book_name}`).pipe(
-            tap(bookFromAPI => this.saveBookToFireStore(bookFromAPI)),
-            map(bookFromAPI => this.findChapter(bookFromAPI.book, chapter_nr))
-          );
-        }
+      map(book => {
         const chapters: Chapter[] = book.book as Chapter[];
         const found: Chapter = this.findChapter(chapters, chapter_nr);
-        return of(found);
+        return found;
       })
     );
   }
@@ -126,6 +129,10 @@ export class ServiceService {
       .collection('from-users')
       .doc<FromUser>(email)
       .valueChanges();
+  }
+
+  getFromUserAdmin(): Observable<FromUser[]> {
+    return this.db.collection<FromUser>('from-users').valueChanges();
   }
 
   sendVerses(ref: Reference) {
@@ -216,9 +223,40 @@ export class ServiceService {
       { id: 'Exodus', name: 'Êxodo' },
       { id: 'Numbers', name: 'Número' },
       { id: 'Leviticus', name: 'Levítico' },
-      { id: 'Deutoronomy', name: 'Deutoronômio' },
+      { id: 'Deuteronomy', name: 'Deutoronômio' },
+      { id: 'Joshua', name: 'Josué' },
+      { id: 'Judges', name: 'Juízes' },
+      { id: 'Ruth', name: 'Rute' },
+      { id: '1Samuel', name: '1o Samuel' },
+      { id: '2Samuel', name: '2o Samuel' },
+      { id: '1Kings', name: '1o Reis' },
+      { id: '2Kings', name: '2o Reis' },
+      { id: '1Chronicles', name: '1o Crônicas' },
+      { id: '2Chronicles', name: '2o Crônicas' },
+      { id: 'Ezra', name: 'Esdras' },
+      { id: 'Nehemiah', name: 'Neemias' },
+      { id: 'Esther', name: 'Estér' },
+      { id: 'Job', name: 'Jó' },
       { id: 'Psalms', name: 'Salmos' },
       { id: 'Proverbs', name: 'Provérbios' },
+      { id: 'Ecclesiastes', name: 'Eclesiastes' },
+      { id: 'SongofSongs', name: 'Cantares' },
+      { id: 'Isaiah', name: 'Isaías' },
+      { id: 'Jeremiah', name: 'Jeremias' },
+      { id: 'Lamentations', name: 'Lamentações' },
+      { id: 'Ezekiel', name: 'Ezequiel' },
+      { id: 'Daniel', name: 'Daniel' },
+      { id: 'Hosea', name: 'Oséias' },
+      { id: 'Joel', name: 'Joel' },
+      { id: 'Amos', name: 'Amós' },
+      { id: 'Obadiah', name: 'Obadias' },
+      { id: 'Jonah', name: 'Jonas' },
+      { id: 'Micah', name: 'Miquéias' },
+      { id: 'Nahum', name: 'Naum' },
+      { id: 'Habakkuk', name: 'Habacuque' },
+      { id: 'Zephaniah', name: 'Sofonias' },
+      { id: 'Haggai', name: 'Ageu' },
+      { id: 'Zechariah', name: 'Zacarias' },
       { id: 'Matthew', name: 'Mateus' },
       { id: 'Mark', name: 'Marcos' },
       { id: 'Luke', name: 'Lucas' },

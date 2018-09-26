@@ -1,16 +1,17 @@
+import { FromUser } from './../interfaces';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ServiceService } from '../service.service';
-import { switchMap, filter, first } from 'rxjs/operators';
 import { AlertController } from '@ionic/angular';
+import { switchMap, filter, first } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-passages',
-  templateUrl: './passages.page.html',
-  styleUrls: ['./passages.page.scss']
+  selector: 'app-admin',
+  templateUrl: './admin.page.html',
+  styleUrls: ['./admin.page.scss']
 })
-export class PassagesPage implements OnInit {
-  reference$: Observable<any>;
+export class AdminPage implements OnInit {
+  reference$: Observable<FromUser[]>;
   constructor(public service: ServiceService, public alert: AlertController) {}
 
   ngOnInit() {
@@ -70,13 +71,9 @@ export class PassagesPage implements OnInit {
   }
 
   getReferences() {
-    this.reference$ = this.service.user.pipe(
-      switchMap(user =>
-        this.service.getFromUser(user.email).pipe(
-          filter(refs => !!refs),
-          first()
-        )
-      )
+    this.reference$ = this.service.getFromUserAdmin().pipe(
+      filter(refs => !!refs),
+      first()
     );
   }
 }

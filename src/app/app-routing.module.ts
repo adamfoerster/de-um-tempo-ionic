@@ -15,7 +15,8 @@ const routes: Routes = [
     path: 'bible',
     loadChildren: './bible/bible.module#BiblePageModule'
   },
-  { path: 'passages', loadChildren: './passages/passages.module#PassagesPageModule' }
+  { path: 'passages', loadChildren: './passages/passages.module#PassagesPageModule' },
+  { path: 'admin', loadChildren: './admin/admin.module#AdminPageModule' }
 ];
 
 @NgModule({
