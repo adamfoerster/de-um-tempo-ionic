@@ -6,11 +6,13 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { AdminPage } from './admin.page';
+import { AdminGuard } from '../admin.guard';
 
 const routes: Routes = [
   {
     path: '',
-    component: AdminPage
+    component: AdminPage,
+    canActivate: [AdminGuard]
   }
 ];
 
@@ -21,6 +23,7 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [AdminPage]
+  declarations: [AdminPage],
+  providers: [AdminGuard]
 })
 export class AdminPageModule {}

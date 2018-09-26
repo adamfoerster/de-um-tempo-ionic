@@ -1,15 +1,17 @@
 <ion-header>
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-menu-button></ion-menu-button>
-      </ion-buttons>
-      <ion-title>Administração</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  
-  <ion-content padding
-    *ngIf="(reference$|async) as refs">
-    <ion-card *ngFor="let passage of refs.references"
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Administração</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding
+  *ngIf="(reference$|async) as users">
+  <div *ngFor="let user of users">
+    <ion-item><h1>{{user.email}}</h1></ion-item>
+    <ion-card *ngFor="let passage of user.references"
       mode="ios">
       <ion-card-header>
         <ion-card-title>{{passage.book}} {{passage.chapter}}</ion-card-title>
@@ -31,11 +33,14 @@
         </ion-buttons>
       </ion-item>
     </ion-card>
-  </ion-content>
-  <ion-content *ngIf="!(reference$|async)">
-    <ion-card mode="ios">
-      <ion-card-content>
-        Você não está logado. Clique no link <ion-icon name="log-in"></ion-icon> Login no menu ao lado.
-      </ion-card-content>
-    </ion-card>
-  </ion-content>
+    <br>
+  </div>
+</ion-content>
+<ion-content *ngIf="!(reference$|async)">
+  <ion-card mode="ios">
+    <ion-card-content>
+      Você não está logado. Clique no link <ion-icon name="log-in"></ion-icon>
+      Login no menu ao lado.
+    </ion-card-content>
+  </ion-card>
+</ion-content>

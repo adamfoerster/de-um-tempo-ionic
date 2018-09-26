@@ -99,7 +99,6 @@ export class ServiceService {
           }
           return of(book);
         }),
-        tap(book => console.log(book)),
         map(book => this.mapResponseToBook(book))
       );
   }
@@ -133,6 +132,18 @@ export class ServiceService {
 
   getFromUserAdmin(): Observable<FromUser[]> {
     return this.db.collection<FromUser>('from-users').valueChanges();
+  }
+
+  getAdminUsers(): Observable<string[]> {
+    return this.db.collection<string>('admins').valueChanges();
+  }
+
+  isAdmin(email: string): Observable<boolean> {
+    return this.db
+      .collection('admins')
+      .doc(email)
+      .valueChanges()
+      .pipe(map(res => !!res), first());
   }
 
   sendVerses(ref: Reference) {

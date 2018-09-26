@@ -8,6 +8,13 @@
       </ion-header>
       <ion-content>
         <br>
+        <div *ngIf="(user|async) as user" class="center">
+          <img [src]="user.photoURL" width="50%" style="border-radius:50%" />
+          <h1 style="color:var(--ion-color-light)">{{user.displayName}}</h1>
+          <em style="color:var(--ion-color-light)">{{user.email}}</em>
+          <br>
+          <br>
+        </div>
         <ion-list>
           <ion-menu-toggle auto-hide="false">
             <ion-item *ngFor="let p of appPages"
@@ -18,6 +25,12 @@
               <ion-label color="light">
                 {{p.title}}
               </ion-label>
+            </ion-item>
+            <ion-item *ngIf="isAdmin"
+            [routerDirection]="'root'"
+            [routerLink]="['/admin']" class="pointer">
+              <ion-icon slot="start"
+                name="build"></ion-icon>Administração
             </ion-item>
             <ion-item *ngIf="!(user | async)"
               (click)="login()" class="pointer">

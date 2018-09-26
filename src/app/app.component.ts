@@ -5,6 +5,7 @@ import { Platform, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -29,6 +30,7 @@ export class AppComponent implements OnInit {
     }
   ];
   user: Observable<any>;
+  isAdmin = false;
 
   constructor(
     public alert: AlertController,
@@ -63,7 +65,16 @@ export class AppComponent implements OnInit {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      this.user = this.service.user;
+      this.user = this.service.user.pipe(
+        tap(user => {
+          if (!user) {
+            return null;
+          }
+          this.service
+            .isAdmin(user.email)
+            .subscribe(isadm => (this.isAdmin = !!isadm));
+        })
+      );
     });
   }
 
