@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class TimelinePage implements OnInit {
   meeting$: Observable<any>;
+  loadedImgs: string[] = [];
 
   constructor(public service: ServiceService) { }
 
@@ -30,6 +31,14 @@ export class TimelinePage implements OnInit {
       `${dateText.substr(6, 2)}T03:00:00Z`
     ].join('');
     return new Date(text);
+  }
+
+  loadImg(img: string) {
+    this.loadedImgs.push(img);
+  }
+
+  checkImg(img): boolean {
+    return this.loadedImgs.includes(img);
   }
 
 }

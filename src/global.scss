@@ -98,9 +98,9 @@
   ion-card {
     background-color: var(--ion-color-light);
   }
-  ion-menu-toggle ion-icon {
+  ion-menu-toggle ion-icon, ion-menu-toggle ion-label {
     color: var(--ion-color-light);
-    font-family: sans-serif;
+    font-family: 'Roboto','Helvetica Neue', 'Lato', sans-serif;
   }
   .pointer {
     cursor: pointer;
