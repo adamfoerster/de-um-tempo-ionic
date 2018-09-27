@@ -79,4 +79,8 @@ export class PassagesPage implements OnInit {
       )
     );
   }
+
+  getPt(book) {
+    return this.service.getBookPt(book);
+  }
 }

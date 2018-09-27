@@ -295,6 +295,10 @@ export class ServiceService {
     ];
   }
 
+  getBookPt(bookEn): string {
+    return this.getBooks().find(b => b.id === bookEn).name;
+  }
+
   fetchFromAPI(bookName: string): Observable<Book> {
     return this.http
       .jsonp<Book>(`${env.bible.host}${bookName}`, 'getbible')

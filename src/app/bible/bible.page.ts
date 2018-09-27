@@ -100,8 +100,12 @@ export class BiblePage implements OnInit {
 
   versesToText(verses: Verse[]): string {
     return [
-      `${this.selectedBook} ${this.selectedChapter} <br />`,
+      `${this.getPt(this.selectedBook)} ${this.selectedChapter} <br />`,
       ...verses.map(verse => `${verse.verse_nr} ${verse.verse} `)
     ].join('');
+  }
+
+  getPt(book) {
+    return this.service.getBookPt(book);
   }
 }

@@ -19,7 +19,7 @@
   <ion-card *ngFor="let passage of refs.references"
     mode="ios">
     <ion-card-header>
-      <ion-card-title>{{passage.book}} {{passage.chapter}}</ion-card-title>
+      <ion-card-title>{{getPt(passage.book)}} {{passage.chapter}}</ion-card-title>
       <ion-card-subtitle>{{passage.comment}}</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content [innerHTML]="passage.reference"></ion-card-content>

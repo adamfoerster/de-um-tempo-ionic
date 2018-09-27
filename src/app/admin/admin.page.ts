@@ -76,4 +76,8 @@ export class AdminPage implements OnInit {
       first()
     );
   }
+
+  getPt(book) {
+    return this.service.getBookPt(book);
+  }
 }
