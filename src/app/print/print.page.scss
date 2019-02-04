@@ -1,0 +1,36 @@
+ion-row {
+  background-color: #fff;
+  border-bottom: 1px solid #000;
+  page-break-inside: avoid;
+}
+.logo {
+  text-align: center;
+  img {
+    width: 40px;
+  }
+  h3 {
+    color: var(--ion-color-primary);
+    font-size: 0.7em;
+    white-space: nowrap;
+    line-height: 1em;
+    margin: 0;
+  }
+}
+.high {
+  height: 125px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.reference {
+  font-size: 0.75em;
+  overflow: hidden;
+  color: #000;
+  position: relative;
+}
+.address {
+  position: absolute;
+  bottom: 5px;
+}

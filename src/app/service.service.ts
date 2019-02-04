@@ -280,6 +280,8 @@ export class ServiceService {
       { id: 'Ephesians', name: 'Efésios' },
       { id: 'Philippians', name: 'Filipenses' },
       { id: 'Colossians', name: 'Colossenses' },
+      { id: '1Thessalonians', name: '1a Tessalonicenses'},
+      { id: '2Thessalonians', name: '2a Tessalonicenses'},
       { id: '1Timothy', name: '1a Timóteo' },
       { id: '2Timothy', name: '2a Timóteo' },
       { id: 'Titus', name: 'Tito' },

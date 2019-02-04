@@ -7,45 +7,59 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding
-  *ngIf="(reference$|async) as users">
+<ion-content padding *ngIf="(reference$ | async) as users">
   <ion-item>
-    <ion-icon name="archive" item-start></ion-icon>&nbsp;
-    Passagens salvas&nbsp;
-    <ion-badge color="primary">{{refsLength}}</ion-badge>
+    <h1 class="white-text">
+      Passagens armazenadas
+      <ion-badge color="primary">{{ totalRefs }}</ion-badge>
+    </h1>
   </ion-item>
+  <ion-item [routerLink]="['/print']">
+    <ion-icon name="print" color="light"></ion-icon>
+    <span class="white-text">Versão de Impressão</span>
+  </ion-item>  
   <div *ngFor="let user of users">
-    <ion-item><h1>{{user.email}}</h1></ion-item>
-    <ion-card *ngFor="let passage of user.references"
-      mode="ios">
+    <ion-item
+      ><h1 class="white-text">
+        {{ user.email }}
+        <ion-badge color="primary">{{ getTotalRefFromUser(user) }}</ion-badge>
+      </h1></ion-item
+    >
+    <ion-card *ngFor="let passage of user.references" mode="ios">
       <ion-card-header>
-        <ion-card-title>{{getPt(passage.book)}} {{passage.chapter}}</ion-card-title>
-        <ion-card-subtitle>{{passage.comment}}</ion-card-subtitle>
+        <ion-card-title
+          >{{ getPt(passage.book) }} {{ passage.chapter }}</ion-card-title
+        >
+        <ion-card-subtitle>{{ passage.comment }}</ion-card-subtitle>
       </ion-card-header>
       <ion-card-content [innerHTML]="passage.reference"></ion-card-content>
       <ion-item>
         <ion-buttons>
-          <ion-button fill="clear"
+          <ion-button
+            fill="clear"
             color="danger"
-            (click)="removeReference(passage.id)">
+            (click)="removeReference(passage.id)"
+          >
             <ion-icon name="trash"></ion-icon>Remover&nbsp;
           </ion-button>
-          <ion-button fill="clear"
+          <ion-button
+            fill="clear"
             color="primary"
-            (click)="sendComment(passage.id)">
+            (click)="sendComment(passage.id)"
+          >
             <ion-icon name="quote"></ion-icon>Comentar&nbsp;
           </ion-button>
         </ion-buttons>
       </ion-item>
     </ion-card>
-    <br>
+    <br />
   </div>
 </ion-content>
-<ion-content *ngIf="!(reference$|async)">
+<ion-content *ngIf="!(reference$ | async)">
   <ion-card mode="ios">
     <ion-card-content>
-      Você não está logado. Clique no link <ion-icon name="log-in"></ion-icon>
-      Login no menu ao lado.
+      Você não está logado. Clique no link
+      <ion-icon name="log-in"></ion-icon> Login no menu ao lado.
     </ion-card-content>
   </ion-card>
 </ion-content>

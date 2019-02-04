@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ServiceService } from '../service.service';
 import { AlertController } from '@ionic/angular';
-import { filter, first, tap } from 'rxjs/operators';
+import { switchMap, filter, first, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-admin',
@@ -12,7 +12,7 @@ import { filter, first, tap } from 'rxjs/operators';
 })
 export class AdminPage implements OnInit {
   reference$: Observable<FromUser[]>;
-  refsLength = 0;
+  totalRefs = 0;
   constructor(public service: ServiceService, public alert: AlertController) {}
 
   ngOnInit() {
@@ -79,8 +79,16 @@ export class AdminPage implements OnInit {
         this.refsLength = allRefs;
       }),
       filter(refs => !!refs),
+      tap(_ => this.totalRefs = 0),
+      tap(users => users.forEach(user => {
+        this.totalRefs += this.getTotalRefFromUser(user);
+      })),
       first()
     );
+  }
+
+  getTotalRefFromUser(user: FromUser): number {
+    return user.references.length;
   }
 
   getPt(book) {
