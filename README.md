@@ -1,5 +1,5 @@
 # Dê Um Tempo
-** APP criado para o grupo Dê Um Tempo enviar passagens bíblicas e postar resumos das reuniões **
+**APP criado para o grupo Dê Um Tempo enviar passagens bíblicas e postar resumos das reuniões**
 
 O Dê Um Tempo é um grupo de pessoas que se reúnem semanalmente para se desconectar de todas as distrações e ansiedades da semana e buscar a Deus.
 
