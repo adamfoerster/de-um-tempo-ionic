@@ -9,7 +9,10 @@ import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
-  templateUrl: 'app.component.html'
+  templateUrl: 'app.component.html',
+  styles: [
+    `.color-medium { color: #fff; }`
+  ]
 })
 export class AppComponent implements OnInit {
   public appPages = [
@@ -48,6 +51,7 @@ export class AppComponent implements OnInit {
       this.alert
         .create({
           message: 'Existe uma versão mais nova deste APP',
+          backdropDismiss: false,
           buttons: [
             {
               text: 'Atualizar',

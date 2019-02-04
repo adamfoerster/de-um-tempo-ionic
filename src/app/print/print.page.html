@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Versão de Impressão</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding>
+  <ion-grid *ngIf="(reference$ | async) as refs">
+    <ion-row align-items-center *ngFor="let passage of refs.references">
+      <ion-col size="2">
+        <div class="logo high">
+          <div>
+            <img src="/assets/deumtempo-logo.png" />
+            <h3>Grupo de oração<br /><b>Dê um tempo</b></h3>
+          </div>
+        </div>
+      </ion-col>
+      <ion-col size="10">
+        <div class="high">
+          <div class="reference" [innerHTML]="passage.reference"></div>
+          <div class="logo address">
+            <br />
+            <h3>
+              Quinta - 13h30 às 14h00 | Impact Hub - Rua Fernando Amaro, 60
+            </h3>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

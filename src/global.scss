@@ -87,13 +87,30 @@
 }
 .ios,
 .md {
+  .medium {
+    color: #989aa2 !important;
+  }
   --ion-backdrop-color: var(--ion-color-light-contrast);
-  --ion-toolbar-background-color: var(--ion-color-primary);
+  --toolbar-background-color: var(--ion-color-primary);
   --ion-toolbar-text-color: var(--ion-color-light);
   --ion-item-text-color: var(--ion-color-light);
+  
+  ion-toolbar {
+    --background: var(--ion-color-primary);
+    --color: var(--ion-color-light);
+  }
 
   ion-content {
-    --ion-background-color: var(--ion-color-medium);
+    --background: var(--ion-color-primary-light);
+    --color: var(--ion-color-medium);
+  }
+  ion-item {
+    --background: var(--ion-color-primary-light);
+    --color: var(--ion-color-medium);
+    color: var(--ion-color-medium);
+    a {
+      color: var(--ion-color-medium);
+    }
   }
   ion-card {
     background-color: var(--ion-color-light);
@@ -116,6 +133,9 @@
   }
   .light {
     background-color: var(--ion-color-primary-shade) !important;
+  }
+  .white-text {
+    color: var(--ion-color-light);
   }
   .center {
     text-align: center;

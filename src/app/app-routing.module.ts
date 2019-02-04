@@ -22,7 +22,8 @@ const routes: Routes = [
   {
     path: 'admin',
     loadChildren: './admin/admin.module#AdminPageModule',
-  }
+  },
+  { path: 'print', loadChildren: './print/print.module#PrintPageModule' }
 ];
 
 @NgModule({
