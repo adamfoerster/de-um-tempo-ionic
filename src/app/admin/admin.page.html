@@ -9,6 +9,11 @@
 
 <ion-content padding
   *ngIf="(reference$|async) as users">
+  <ion-item>
+    <ion-icon name="archive" item-start></ion-icon>&nbsp;
+    Passagens salvas&nbsp;
+    <ion-badge color="primary">{{refsLength}}</ion-badge>
+  </ion-item>
   <div *ngFor="let user of users">
     <ion-item><h1>{{user.email}}</h1></ion-item>
     <ion-card *ngFor="let passage of user.references"

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ServiceService } from '../service.service';
 import { AlertController } from '@ionic/angular';
-import { switchMap, filter, first } from 'rxjs/operators';
+import { filter, first, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-admin',
@@ -12,6 +12,7 @@ import { switchMap, filter, first } from 'rxjs/operators';
 })
 export class AdminPage implements OnInit {
   reference$: Observable<FromUser[]>;
+  refsLength = 0;
   constructor(public service: ServiceService, public alert: AlertController) {}
 
   ngOnInit() {
@@ -72,6 +73,11 @@ export class AdminPage implements OnInit {
 
   getReferences() {
     this.reference$ = this.service.getFromUserAdmin().pipe(
+      tap(refs => {
+        let allRefs = 0;
+        refs.forEach(ref => allRefs = allRefs + ref.references.length);
+        this.refsLength = allRefs;
+      }),
       filter(refs => !!refs),
       first()
     );
