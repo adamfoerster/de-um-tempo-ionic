@@ -20,7 +20,7 @@ ion-row {
   height: 125px;
   box-sizing: border-box;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   position: relative;
 }
@@ -33,4 +33,7 @@ ion-row {
 .address {
   position: absolute;
   bottom: 5px;
+}
+.logo.high {
+  justify-content: center;
 }

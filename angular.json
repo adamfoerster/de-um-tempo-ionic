@@ -30,7 +30,9 @@
                 "input": "node_modules/@ionic/angular/dist/ionic/svg",
                 "output": "./svg"
               },
-              "src/manifest.json"
+              "src/manifest.json",
+              { "glob": "robots.txt", "input": "src/assets", "output": "/" },
+              { "glob": "sitemap.xml", "input": "src/assets", "output": "/" }
             ],
             "styles": [
               {
@@ -87,9 +89,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
-            "styles": [
-              "styles.css"
-            ],
+            "styles": ["styles.css"],
             "scripts": [],
             "assets": [
               {
@@ -109,13 +109,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["src/tsconfig.app.json", "src/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
           }
         },
         "ionic-cordova-build": {
@@ -159,9 +154,7 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
