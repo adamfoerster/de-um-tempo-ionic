@@ -73,6 +73,11 @@ export class AdminPage implements OnInit {
 
   getReferences() {
     this.reference$ = this.service.getFromUserAdmin().pipe(
+      tap(refs => {
+        let allRefs = 0;
+        refs.forEach(ref => allRefs = allRefs + ref.references.length);
+        this.refsLength = allRefs;
+      }),
       filter(refs => !!refs),
       tap(_ => this.totalRefs = 0),
       tap(users => users.forEach(user => {
