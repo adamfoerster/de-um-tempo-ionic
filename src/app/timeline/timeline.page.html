@@ -6,16 +6,37 @@
     <ion-title>Timeline</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content *ngIf="meeting$ | async as meetings"
-  padding>
-  <div *ngFor="let meeting of meetings"
-    class="timecont">
-    <ion-card class="example-card"
-      mode="ios" (deferLoad)="loadImg(meeting.photo)">
-      <ion-img *ngIf="checkImg(meeting.photo)"
-        [src]="meeting.photo"></ion-img>
+<ion-content *ngIf="(meeting$ | async) as meetings" padding>
+    <ion-card
+    class="example-card"
+    mode="ios"
+    (deferLoad)="loadImg(meeting.photo)"
+  >
+    <ion-card-content>
+      <p>Toda quinta, de 13h30 às 14h00. <br>
+        Rua Fernando Amaro, 60. <br>
+        <ion-icon name="call"></ion-icon> 41 98873.5014 Valquiria.</p>
+    </ion-card-content>
+  </ion-card>
+  <div *ngFor="let meeting of meetings" class="timecont">
+    <ion-card
+      class="example-card"
+      mode="ios"
+      (deferLoad)="loadImg(meeting.photo)"
+    >
+    <div class="spinner" *ngIf="meeting.photo">
+      <ion-spinner *ngIf="!loadedImgs.includes(meeting.photo)"></ion-spinner>
+    </div>
+      <ion-img
+        *ngIf="checkImg(meeting.photo)"
+        [src]="meeting.photo"
+        (ionImgDidLoad)="loadImg(meeting.photo)"
+      ></ion-img>
+      
       <ion-card-header>
-        <ion-card-title>{{makeDate(meeting.id)|date:'dd/MM/yyyy'}}</ion-card-title>
+        <ion-card-title>{{
+          makeDate(meeting.id) | date: 'dd/MM/yyyy'
+        }}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <p [innerHTML]="meeting.message"></p>
@@ -25,8 +46,8 @@
   </div>
 </ion-content>
 <ion-content *ngIf="!(meeting$ | async)">
-  <br>
-  <br>
+  <br />
+  <br />
   <div class="center">
     <ion-spinner></ion-spinner>
   </div>
