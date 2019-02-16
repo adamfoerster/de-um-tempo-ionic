@@ -10,7 +10,6 @@
     <ion-card
     class="example-card"
     mode="ios"
-    (deferLoad)="loadImg(meeting.photo)"
   >
     <ion-card-content>
       <p>Toda quinta, de 13h30 às 14h00. <br>
@@ -30,6 +29,7 @@
       <ion-img
         *ngIf="checkImg(meeting.photo)"
         [src]="meeting.photo"
+        [alt]="makeDate(meeting.id) | date: 'dd/MM/yyyy'"
         (ionImgDidLoad)="loadImg(meeting.photo)"
       ></ion-img>
       
