@@ -13,7 +13,7 @@ import { switchMap, filter, first, tap } from 'rxjs/operators';
 export class AdminPage implements OnInit {
   reference$: Observable<FromUser[]>;
   totalRefs = 0;
-  refsLength = 0;
+  refsLength: any;
   constructor(public service: ServiceService, public alert: AlertController) {}
 
   ngOnInit() {

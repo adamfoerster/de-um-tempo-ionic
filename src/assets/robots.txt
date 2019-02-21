@@ -1,1 +1,3 @@
 sitemap: https://de-um-tempo.firebaseapp.com/sitemap.xml
+User-agent: *
+Allow: /
