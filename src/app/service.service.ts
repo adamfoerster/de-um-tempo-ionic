@@ -75,7 +75,7 @@ export class ServiceService {
   addVerses(passage: string) {
     this.user.pipe(first()).subscribe(user => {
       if (user && user.email) {
-        return empty();
+        return of([]);
       }
       this.db
         .collection('messages')
@@ -172,7 +172,7 @@ export class ServiceService {
       first(),
       switchMap(user => {
         if (!user || !user.email) {
-          return empty();
+          return of([]);
         }
         return combineLatest(
           of(user).pipe(first()),
@@ -193,7 +193,7 @@ export class ServiceService {
       first(),
       switchMap(user => {
         if (!user || !user.email) {
-          return empty();
+          return of([]);
         }
         return combineLatest(
           of(user).pipe(first()),
