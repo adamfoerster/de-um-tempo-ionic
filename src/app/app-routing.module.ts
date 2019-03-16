@@ -1,3 +1,4 @@
+import { GalleryComponent } from './gallery/gallery.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -21,9 +22,21 @@ const routes: Routes = [
   },
   {
     path: 'admin',
-    loadChildren: './admin/admin.module#AdminPageModule',
+    loadChildren: './admin/admin.module#AdminPageModule'
   },
-  { path: 'print', loadChildren: './print/print.module#PrintPageModule' }
+  {
+    path: 'post',
+    loadChildren: './post-form/post-form.module#PostFormPageModule'
+  },
+  {
+    path: 'gallery',
+    component: GalleryComponent
+  },
+  { path: 'print', loadChildren: './print/print.module#PrintPageModule' },
+  {
+    path: 'post-form',
+    loadChildren: './post-form/post-form.module#PostFormPageModule'
+  }
 ];
 
 @NgModule({

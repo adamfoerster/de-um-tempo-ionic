@@ -26,12 +26,13 @@
     <div class="spinner" *ngIf="meeting.photo">
       <ion-spinner *ngIf="!loadedImgs.includes(meeting.photo)"></ion-spinner>
     </div>
-      <ion-img
+      <img
         *ngIf="checkImg(meeting.photo)"
         [src]="meeting.photo"
         [alt]="makeDate(meeting.id) | date: 'dd/MM/yyyy'"
-        (ionImgDidLoad)="loadImg(meeting.photo)"
-      ></ion-img>
+        (load)="loadImg(meeting.photo)"
+        crossorigin="anonymous"
+      >
       
       <ion-card-header>
         <ion-card-title>{{

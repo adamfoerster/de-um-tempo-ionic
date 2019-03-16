@@ -1,5 +1,5 @@
 export interface Meeting {
-  id: number;
+  id: string;
   message: string;
   photo: string;
   songId: string;
@@ -42,4 +42,9 @@ export interface Reference {
   book: string;
   chapter: number;
   comment?: string;
+}
+
+export interface Photos {
+  email: string;
+  photos: string[];
 }

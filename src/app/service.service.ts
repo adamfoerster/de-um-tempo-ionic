@@ -1,5 +1,6 @@
+import { AngularFireStorage } from '@angular/fire/storage';
 import { Injectable } from '@angular/core';
-import { Observable, empty, of, combineLatest } from 'rxjs';
+import { Observable, empty, of, combineLatest, Subject } from 'rxjs';
 import { shareReplay, tap, map, first, switchMap } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { auth } from 'firebase';
@@ -14,13 +15,16 @@ import {
   BookListItem,
   Verse,
   Reference,
-  FromUser
+  FromUser,
+  Photos
 } from './interfaces';
+import { UploadTask } from '@angular/fire/storage/interfaces';
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceService {
   meeting$: Observable<Meeting[]>;
+  selectedPhoto$: Subject<string> = new Subject();
   loading: string[] = [];
 
   get user() {
@@ -29,12 +33,20 @@ export class ServiceService {
 
   constructor(
     private db: AngularFirestore,
+    private storage: AngularFireStorage,
     private http: HttpClient,
     public afAuth: AngularFireAuth
   ) {
     this.meeting$ = this.db
       .collection<Meeting>('meetings', ref => ref.orderBy('id', 'desc'))
       .valueChanges();
+
+    this.selectedPhoto$.subscribe(console.log);
+  }
+
+  postMeeting(meeting: Meeting) {
+    console.log(meeting);
+    return this.db.collection('meetings').doc(meeting.id.toString()).set(meeting);
   }
 
   fetchBook(bookName: string): Observable<Book> {
@@ -143,7 +155,10 @@ export class ServiceService {
       .collection('admins')
       .doc(email)
       .valueChanges()
-      .pipe(map(res => !!res), first());
+      .pipe(
+        map(res => !!res),
+        first()
+      );
   }
 
   sendVerses(ref: Reference) {
@@ -280,8 +295,8 @@ export class ServiceService {
       { id: 'Ephesians', name: 'Efésios' },
       { id: 'Philippians', name: 'Filipenses' },
       { id: 'Colossians', name: 'Colossenses' },
-      { id: '1Thessalonians', name: '1a Tessalonicenses'},
-      { id: '2Thessalonians', name: '2a Tessalonicenses'},
+      { id: '1Thessalonians', name: '1a Tessalonicenses' },
+      { id: '2Thessalonians', name: '2a Tessalonicenses' },
       { id: '1Timothy', name: '1a Timóteo' },
       { id: '2Timothy', name: '2a Timóteo' },
       { id: 'Titus', name: 'Tito' },
@@ -305,6 +320,40 @@ export class ServiceService {
     return this.http
       .jsonp<Book>(`${env.bible.host}${bookName}`, 'getbible')
       .pipe(map(book => this.mapResponseToBook(book)));
+  }
+
+  getPhotos(): Observable<Photos> {
+    return this.user.pipe(
+      switchMap(user =>
+        this.db
+          .collection('photos')
+          .doc<Photos>(user.email)
+          .valueChanges()
+      )
+    );
+  }
+
+  getPhotoUrl(photo: string): Observable<string> {
+    return this.storage
+      .ref(photo)
+      .getDownloadURL()
+      .pipe(first());
+  }
+
+  saveFile(filePath, file) {
+    return this.user.pipe(
+      switchMap(user => this.db.collection('photos').doc<Photos>(user.email).valueChanges()),
+      first(),
+      switchMap(photos => this.db.collection('photos').doc<Photos>(photos.email).set({
+        ...photos,
+        photos: [...photos.photos, `photos/${filePath}`]
+      })),
+      first(),
+      switchMap(_ => {
+        const ref = this.storage.ref(`photos/${filePath}`);
+        return ref.put(file).task;
+      })
+    );
   }
 
   login() {

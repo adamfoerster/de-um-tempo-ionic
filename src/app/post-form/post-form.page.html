@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Postar Reunião</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-card>
+    <ion-item>
+      <ion-label>Data da reunião</ion-label>
+      <ion-datetime
+        display-format="DD/MM/YYYY"
+        required
+        [(ngModel)]="selectedDate"
+      ></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>Música</ion-label>
+      <ion-input
+        placeholder="ID ou URL da música no Youtube"
+        [(ngModel)]="meeting.songId"
+        text-right
+      ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-thumbnail *ngIf="meeting.photo"><img [src]="meeting.photo"></ion-thumbnail>
+      <ion-button *ngIf="!meeting.photo" (click)="openGallery()">Inserir foto</ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Mensagem</ion-label>
+      <ion-textarea
+        rows="4"
+        placeholder="Corpo da Mensagem"
+        [(ngModel)]="meeting.message"
+      ></ion-textarea>
+    </ion-item>
+    <ion-button expand="full" (click)="post()">Postar</ion-button>
+  </ion-card>
+</ion-content>

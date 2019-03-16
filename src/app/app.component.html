@@ -33,6 +33,15 @@
               ><span class="color-medium">Administração</span>
             </ion-item>
             <ion-item
+              *ngIf="isAdmin"
+              [routerDirection]="'root'"
+              [routerLink]="['/post']"
+              class="pointer"
+            >
+              <ion-icon slot="start" name="build"></ion-icon
+              ><span class="color-medium">Postar Reunião</span>
+            </ion-item>
+            <ion-item
               *ngIf="!(user | async)"
               (click)="login()"
               class="pointer item"
