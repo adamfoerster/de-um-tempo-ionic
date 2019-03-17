@@ -1,10 +1,9 @@
 import { ServiceService } from './../service.service';
 import { Component, OnInit, Output, ViewChild } from '@angular/core';
 import { EventEmitter } from 'events';
-import { Observable, concat, combineLatest } from 'rxjs';
-import { startWith, switchMap, tap, map, switchAll } from 'rxjs/operators';
-import { Photos } from '../interfaces';
-import { LoadingController } from '@ionic/angular';
+import { Observable, combineLatest } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { LoadingController, ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-gallery',
@@ -15,11 +14,13 @@ export class GalleryComponent implements OnInit {
   @Output() selectedPhoto: EventEmitter = new EventEmitter();
   photos$: Observable<string[]>;
   @ViewChild('file') file: any;
+  @ViewChild('capture') capture: any;
   inputImage: any;
 
   constructor(
     public service: ServiceService,
-    public loadingController: LoadingController
+    public loadingController: LoadingController,
+    private modal: ModalController
   ) {}
 
   ngOnInit() {
@@ -30,7 +31,10 @@ export class GalleryComponent implements OnInit {
       );
   }
 
-  takePic() {
+  takePic(capture = false) {
+    if (capture) {
+      return this.capture.nativeElement.click();
+    }
     this.file.nativeElement.click();
   }
 
@@ -64,5 +68,9 @@ export class GalleryComponent implements OnInit {
       message: 'Uploading'
     });
     return await loading.present();
+  }
+
+  close() {
+    this.modal.dismiss();
   }
 }

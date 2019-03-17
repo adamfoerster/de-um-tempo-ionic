@@ -3,7 +3,6 @@ import { GalleryComponent } from './../gallery/gallery.component';
 import { Meeting } from './../interfaces';
 import { Component, OnInit } from '@angular/core';
 import * as dayjs from 'dayjs';
-import { AngularFireStorage } from '@angular/fire/storage';
 import { ModalController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
@@ -24,7 +23,6 @@ export class PostFormPage implements OnInit {
 
   constructor(
     private service: ServiceService,
-    private storage: AngularFireStorage,
     private modal: ModalController,
     private router: Router,
     public loading: LoadingController
@@ -43,7 +41,7 @@ export class PostFormPage implements OnInit {
     this.getYoutubeId();
     const loading = await this.loading.create();
     await loading.present();
-    const saved = await this.service.postMeeting(this.meeting);
+    await this.service.postMeeting(this.meeting);
     await loading.dismiss();
     this.router.navigate(['timeline']);
   }

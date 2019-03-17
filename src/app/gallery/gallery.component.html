@@ -1,21 +1,43 @@
-<ion-button (click)="takePic()">
-  <ion-icon name="aperture"></ion-icon>&nbsp;Tirar Foto
-</ion-button>
+<ion-grid>
+  <ion-row>
+    <ion-button (click)="takePic()">
+      <ion-icon name="aperture"></ion-icon>
+    </ion-button>
+    <ion-button (click)="takePic()">
+      <ion-icon name="photos"></ion-icon>
+    </ion-button>
+    <ion-button (click)="close()">
+      <ion-icon name="close"></ion-icon>
+    </ion-button>
+  </ion-row>
+  <ion-row>
+    <h2>Galeria Remota</h2>
+  </ion-row>
+  <ion-row justify-content-start align-items-start>
+    <ion-thumbnail
+      *ngFor="let photo of (photos$ | async)"
+      (click)="selectPhoto(photo)"
+    >
+      <img [src]="photo" />
+    </ion-thumbnail>
+  </ion-row>
+</ion-grid>
+
 <input
   class="hidden"
-  #file
+  #capture
+  capture="filesystem"
   type="file"
-  capture
   accept="image/*"
   (change)="uploadFile($event)"
   [(ngModel)]="inputImage"
 />
-<ion-grid>
-  <ion-row justify-content-start align-items-start>
-    <ion-col align-self-center *ngFor="let photo of (photos$ | async)">
-      <ion-thumbnail (click)="selectPhoto(photo)">
-        <img [src]="photo" />
-      </ion-thumbnail>
-    </ion-col>
-  </ion-row>
-</ion-grid>
+<input
+  class="hidden"
+  #file
+  type="file"
+  capture="capture"
+  accept="image/*"
+  (change)="uploadFile($event)"
+  [(ngModel)]="inputImage"
+/>
