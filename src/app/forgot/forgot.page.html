@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Esqueci minha senha</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-card>
+    <ion-item>
+      <ion-label>E-Mails</ion-label>
+      <ion-input
+        placeholder="Seu E-Mail"
+        [(ngModel)]="email"
+        text-right
+        email
+        required
+      ></ion-input>
+    </ion-item>
+    <ion-button expand="full" (click)="post()">Resetar E-Mail</ion-button>
+  </ion-card>
+</ion-content>

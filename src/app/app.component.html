@@ -7,7 +7,7 @@
       <ion-content>
         <br />
         <div *ngIf="(user | async) as user" class="center">
-          <img [src]="user.photoURL" width="50%" style="border-radius:50%" />
+          <img [src]="user.photoURL || 'http://lorempixel.com/200/200/cats'" width="50%" style="border-radius:50%" />
           <h1 style="color:var(--ion-color-light)">{{ user.displayName }}</h1>
           <em style="color:var(--ion-color-light)">{{ user.email }}</em> <br />
           <br />

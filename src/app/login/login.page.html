@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-card>
+    <ion-item>
+      <ion-label>E-Mail</ion-label>
+      <ion-input
+        placeholder="Seu E-Mail"
+        [(ngModel)]="loginForm.email"
+        text-right
+        email
+        required
+      ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Senha</ion-label>
+      <ion-input
+        placeholder="Sua senha"
+        [(ngModel)]="loginForm.password"
+        text-right
+        type="password"
+        required
+      ></ion-input>
+    </ion-item>
+    <ion-button expand="full" (click)="post()">Entrar</ion-button>
+  </ion-card>
+  <br />
+  <ion-card>
+    <ion-button expand="full" [routerLink]="['/register']">
+      Criar uma conta
+    </ion-button>
+    <!-- <ion-item>
+      <a [routerLink]="['/forgot-password']">Esqueci a senha</a>
+    </ion-item> -->
+    <ion-button expand="full" (click)="service.loginGoogle()">
+      Entrar com Google
+    </ion-button>
+  </ion-card>
+</ion-content>

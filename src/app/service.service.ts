@@ -19,6 +19,7 @@ import {
   Photos
 } from './interfaces';
 import { UploadTask } from '@angular/fire/storage/interfaces';
+import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
@@ -31,22 +32,39 @@ export class ServiceService {
     return this.afAuth.user.pipe(shareReplay(1));
   }
 
+  get isLoggedIn(): boolean {
+    const user = JSON.parse(localStorage.getItem('user'));
+    return user !== null;
+  }
+
   constructor(
     private db: AngularFirestore,
     private storage: AngularFireStorage,
     private http: HttpClient,
-    public afAuth: AngularFireAuth
+    public afAuth: AngularFireAuth,
+    private router: Router
   ) {
     this.meeting$ = this.db
       .collection<Meeting>('meetings', ref => ref.orderBy('id', 'desc'))
       .valueChanges();
 
     this.selectedPhoto$.subscribe(console.log);
+
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        localStorage.setItem('user', JSON.stringify(this.user));
+      } else {
+        localStorage.setItem('user', null);
+      }
+    });
   }
 
   postMeeting(meeting: Meeting) {
     console.log(meeting);
-    return this.db.collection('meetings').doc(meeting.id.toString()).set(meeting);
+    return this.db
+      .collection('meetings')
+      .doc(meeting.id.toString())
+      .set(meeting);
   }
 
   fetchBook(bookName: string): Observable<Book> {
@@ -342,12 +360,22 @@ export class ServiceService {
 
   saveFile(filePath, file) {
     return this.user.pipe(
-      switchMap(user => this.db.collection('photos').doc<Photos>(user.email).valueChanges()),
+      switchMap(user =>
+        this.db
+          .collection('photos')
+          .doc<Photos>(user.email)
+          .valueChanges()
+      ),
       first(),
-      switchMap(photos => this.db.collection('photos').doc<Photos>(photos.email).set({
-        ...photos,
-        photos: [...photos.photos, `photos/${filePath}`]
-      })),
+      switchMap(photos =>
+        this.db
+          .collection('photos')
+          .doc<Photos>(photos.email)
+          .set({
+            ...photos,
+            photos: [...photos.photos, `photos/${filePath}`]
+          })
+      ),
       first(),
       switchMap(_ => {
         const ref = this.storage.ref(`photos/${filePath}`);
@@ -356,12 +384,38 @@ export class ServiceService {
     );
   }
 
-  login() {
+  loginGoogle() {
     this.afAuth.auth.signInWithRedirect(new auth.GoogleAuthProvider());
   }
 
-  logout() {
-    this.afAuth.auth.signOut();
-    window.location.reload();
+  async logout() {
+    await this.afAuth.auth.signOut();
+    localStorage.removeItem('user');
+    this.router.navigate(['login']);
+  }
+
+  async login(email: string, password: string) {
+    const result = await this.afAuth.auth.signInWithEmailAndPassword(
+      email,
+      password
+    );
+    this.router.navigate(['/']);
+  }
+
+  async register(email: string, password: string) {
+    const result = await this.afAuth.auth.createUserWithEmailAndPassword(
+      email,
+      password
+    );
+    this.sendEmailVerification();
+  }
+
+  async sendEmailVerification() {
+    await this.afAuth.auth.currentUser.sendEmailVerification();
+    this.router.navigate(['login']);
+  }
+
+  async sendPasswordResetEmail(passwordResetEmail: string) {
+    return await this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail);
   }
 }

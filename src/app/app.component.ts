@@ -6,6 +6,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -41,7 +42,8 @@ export class AppComponent implements OnInit {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     public service: ServiceService,
-    private swUpdate: SwUpdate
+    private swUpdate: SwUpdate,
+    private router: Router
   ) {
     this.initializeApp();
   }
@@ -83,7 +85,7 @@ export class AppComponent implements OnInit {
   }
 
   login() {
-    this.service.login();
+    this.router.navigate(['login']);
   }
 
   logout() {

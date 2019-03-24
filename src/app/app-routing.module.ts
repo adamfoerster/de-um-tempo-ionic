@@ -36,6 +36,22 @@ const routes: Routes = [
   {
     path: 'post-form',
     loadChildren: './post-form/post-form.module#PostFormPageModule'
+  },
+  {
+    path:  'login',
+    loadChildren: './login/login.module#LoginPageModule'
+  },
+  {
+    path:  'register',
+    loadChildren: './register/register.module#RegisterPageModule'
+  },
+  {
+    path:  'forgot-password',
+    loadChildren: './forgot/forgot.module#ForgotPageModule'
+  },
+  {
+    path:  'verify-email',
+    loadChildren: './verify/verify.module#VerifyPageModule'
   }
 ];
 

@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Observable, empty } from 'rxjs';
 import { map, first, switchMap } from 'rxjs/operators';
@@ -19,15 +20,15 @@ export class BiblePage implements OnInit {
   selectedVerses: Verse[] = [];
   selectedBook = 'Psalms';
 
-  constructor(public service: ServiceService, public alert: AlertController) {}
+  constructor(
+    public service: ServiceService,
+    public alert: AlertController,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.read(this.selectedBook);
     this.books = this.service.getBooks();
-  }
-
-  ev(e) {
-    console.log(e);
   }
 
   read(bookName) {
@@ -75,7 +76,7 @@ export class BiblePage implements OnInit {
         })
         .then(alert => {
           alert.present();
-          alert.onDidDismiss().then(_ => this.service.login());
+          alert.onDidDismiss().then(_ => this.router.navigate(['login']));
         });
     });
   }
