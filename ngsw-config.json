@@ -18,6 +18,13 @@
     }
   ],
   "dataGroups": [
-    
+    {
+      "name": "dynamicResources",
+      "urls": ["https://firebasestorage.googleapis.com/v0/b/de-um-tempo.appspot.com/**/*"],
+      "cacheConfig": {
+        "maxSize": 250,
+        "maxAge": "14d"
+      }
+    }
   ]
 }
