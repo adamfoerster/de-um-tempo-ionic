@@ -1,6 +1,6 @@
 import { AngularFireStorage } from '@angular/fire/storage';
 import { Injectable } from '@angular/core';
-import { Observable, empty, of, combineLatest, Subject } from 'rxjs';
+import { Observable, empty, of, combineLatest, Subject, from } from 'rxjs';
 import { shareReplay, tap, map, first, switchMap } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { auth } from 'firebase';
@@ -359,28 +359,36 @@ export class ServiceService {
   }
 
   saveFile(filePath, file) {
-    return this.user.pipe(
+    const ref = this.storage.ref(`photos/${filePath}`);
+    return from(ref.put(file).task).pipe(
+      switchMap(_ => this.user),
+      first(),
       switchMap(user =>
-        this.db
-          .collection('photos')
-          .doc<Photos>(user.email)
-          .valueChanges()
+        combineLatest(
+          this.db
+            .collection('photos')
+            .doc<Photos>(user.email)
+            .valueChanges(),
+          of(user.email)
+        )
       ),
       first(),
-      switchMap(photos =>
-        this.db
+      switchMap(([photos, email]) => {
+        if (!photos) {
+          return this.db.collection('photos').doc(email).set({
+            email,
+            photos: [`photos/${filePath}`]
+          });
+        }
+        return this.db
           .collection('photos')
           .doc<Photos>(photos.email)
           .set({
             ...photos,
             photos: [...photos.photos, `photos/${filePath}`]
-          })
-      ),
+          });
+      }),
       first(),
-      switchMap(_ => {
-        const ref = this.storage.ref(`photos/${filePath}`);
-        return ref.put(file).task;
-      })
     );
   }
 

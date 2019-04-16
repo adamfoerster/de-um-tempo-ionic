@@ -1,7 +1,7 @@
 import { ServiceService } from './../service.service';
 import { Component, OnInit, Output, ViewChild } from '@angular/core';
 import { EventEmitter } from 'events';
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, combineLatest, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { LoadingController, ModalController } from '@ionic/angular';
 
@@ -27,7 +27,12 @@ export class GalleryComponent implements OnInit {
     this.photos$ = this.service
       .getPhotos()
       .pipe(
-        switchMap(photos => combineLatest(this.getPhotosUrl(photos.photos)))
+        switchMap(photos => {
+          if (!photos || !photos.photos) {
+            return of([]);
+          }
+          return combineLatest(this.getPhotosUrl(photos.photos));
+        })
       );
   }
 
