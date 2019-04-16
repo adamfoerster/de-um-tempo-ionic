@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ServiceService } from '../service.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-timeline',
@@ -10,6 +11,14 @@ import { Observable } from 'rxjs';
 export class TimelinePage implements OnInit {
   meeting$: Observable<any>;
   loadedImgs: string[] = [];
+  isAdmin: Observable<boolean> = this.service.user.pipe(
+    switchMap(user => {
+      if (!user || !user['email']) {
+        return of(false);
+      }
+      return this.service.isAdmin(user['email']);
+    })
+  );
 
   constructor(public service: ServiceService) { }
 

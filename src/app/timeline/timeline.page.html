@@ -7,14 +7,17 @@
   </ion-toolbar>
 </ion-header>
 <ion-content *ngIf="(meeting$ | async) as meetings" padding>
-    <ion-card
-    class="example-card"
-    mode="ios"
-  >
+  <lazy-af
+    *ngIf="(isAdmin | async)"
+    moduleName="src/app/post-form/post-form.module#PostFormPageModule"
+  ></lazy-af>
+  <ion-card class="example-card" mode="ios">
     <ion-card-content>
-      <p>Toda quinta, de 13h30 às 14h00. <br>
-        Rua Fernando Amaro, 60. <br>
-        <ion-icon name="call"></ion-icon> 41 98873.5014 Valquiria.</p>
+      <p>
+        Toda quinta, de 13h30 às 14h00. <br />
+        Rua Fernando Amaro, 60. <br />
+        <ion-icon name="call"></ion-icon> 41 98873.5014 Valquiria.
+      </p>
     </ion-card-content>
   </ion-card>
   <div *ngFor="let meeting of meetings" class="timecont">
@@ -23,16 +26,16 @@
       mode="ios"
       (deferLoad)="loadImg(meeting.photo)"
     >
-    <div class="spinner" *ngIf="meeting.photo">
-      <ion-spinner *ngIf="!loadedImgs.includes(meeting.photo)"></ion-spinner>
-    </div>
+      <div class="spinner" *ngIf="meeting.photo">
+        <ion-spinner *ngIf="!loadedImgs.includes(meeting.photo)"></ion-spinner>
+      </div>
       <img
         *ngIf="checkImg(meeting.photo)"
         [src]="meeting.photo"
         [alt]="makeDate(meeting.id) | date: 'dd/MM/yyyy'"
         (load)="loadImg(meeting.photo)"
-      >
-      
+      />
+
       <ion-card-header>
         <ion-card-title>{{
           makeDate(meeting.id) | date: 'dd/MM/yyyy'

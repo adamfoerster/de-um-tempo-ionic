@@ -1,11 +1,11 @@
 import { ServiceService } from './service.service';
-import { Component, OnInit } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
-import { Platform, AlertController } from '@ionic/angular';
+import { Platform,AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable,of } from 'rxjs';
+import { tap,switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 @Component({
@@ -76,11 +76,14 @@ export class AppComponent implements OnInit {
           if (!user) {
             return null;
           }
-          this.service
-            .isAdmin(user.email)
-            .subscribe(isadm => (this.isAdmin = !!isadm));
         })
       );
+      this.service.user.pipe(
+        switchMap(user => {
+          if (!user) { return of(false); }
+          return this.service.isAdmin(user['email']);
+        })
+      ).subscribe(isadm => this.isAdmin = !!isadm);
     });
   }
 

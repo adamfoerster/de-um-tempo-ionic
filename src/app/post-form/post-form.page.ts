@@ -26,7 +26,7 @@ export class PostFormPage implements OnInit {
     private modal: ModalController,
     private router: Router,
     public loading: LoadingController
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.service.selectedPhoto$.subscribe(photo => {
@@ -50,10 +50,13 @@ export class PostFormPage implements OnInit {
     if (!this.meeting.songId) {
       return null;
     }
-    const start = this.meeting.songId.indexOf('v=') + 2;
+    let start = this.meeting.songId.indexOf('v=') + 2;
+    if (start === 1) {
+      start = this.meeting.songId.indexOf('youtu.be/') + 9;
+    }
     const end = this.meeting.songId.substr(start).indexOf('&');
     this.meeting.songId = this.meeting.songId.substr(
-      start,
+      start !== 7 ? start : 0,
       end !== -1 ? end : undefined
     );
   }
