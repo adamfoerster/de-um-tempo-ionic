@@ -6,11 +6,11 @@
     <ion-title>Timeline</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content *ngIf="(meeting$ | async) as meetings" padding>
-  <lazy-af
-    *ngIf="(isAdmin | async)"
+<ion-content *ngIf="meeting$ | async as meetings" class="ion-padding">
+  <hero-loader
+    *ngIf="isAdmin | async"
     moduleName="src/app/post-form/post-form.module#PostFormPageModule"
-  ></lazy-af>
+  ></hero-loader>
   <ion-card class="example-card" mode="ios">
     <ion-card-content>
       <p>

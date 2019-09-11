@@ -13,8 +13,8 @@ import { LoadingController, ModalController } from '@ionic/angular';
 export class GalleryComponent implements OnInit {
   @Output() selectedPhoto: EventEmitter = new EventEmitter();
   photos$: Observable<string[]>;
-  @ViewChild('file') file: any;
-  @ViewChild('capture') capture: any;
+  @ViewChild('file', { static: true }) file: any;
+  @ViewChild('capture', { static: true }) capture: any;
   inputImage: any;
 
   constructor(

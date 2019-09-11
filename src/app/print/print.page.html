@@ -6,9 +6,9 @@
     <ion-title>Versão de Impressão</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content padding>
+<ion-content class="ion-padding">
   <ion-grid *ngIf="(reference$ | async) as refs">
-    <ion-row align-items-center *ngFor="let passage of refs">
+    <ion-row class="ion-align-items-center" *ngFor="let passage of refs">
       <ion-col size="2">
         <div class="logo high">
           <div>
@@ -23,7 +23,7 @@
           <div class="logo address">
             <br />
             <h3>
-              Toda Quinta - 13h30 às 14h00 | Rua Fernando Amaro, 60 | 41 98873.5014 Valquiria
+              Toda Quinta 13h30 às 14h00 | Rua Fernando Amaro, 60 | 41 98873.5014 - Valquiria | de-um-tempo.web.app
             </h3>
           </div>
         </div>
