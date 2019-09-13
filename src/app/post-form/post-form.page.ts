@@ -26,7 +26,7 @@ export class PostFormPage implements OnInit {
     private modal: ModalController,
     private router: Router,
     public loading: LoadingController
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.service.selectedPhoto$.subscribe(photo => {
@@ -43,6 +43,13 @@ export class PostFormPage implements OnInit {
     await loading.present();
     await this.service.postMeeting(this.meeting);
     await loading.dismiss();
+    this.meeting = {
+      id: null,
+      message: '',
+      photo: '',
+      songId: '',
+      verseId: ''
+    };
     this.router.navigate(['timeline']);
   }
 
@@ -63,7 +70,7 @@ export class PostFormPage implements OnInit {
 
   async openGallery() {
     const gallery = await this.modal.create({
-      component: GalleryComponent,
+      component: GalleryComponent
     });
     await gallery.present();
   }

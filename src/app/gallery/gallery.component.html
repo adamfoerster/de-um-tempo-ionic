@@ -24,7 +24,6 @@
 <input
   class="hidden"
   #capture
-  capture="filesystem"
   type="file"
   accept="image/*"
   (change)="uploadFile($event)"
@@ -34,7 +33,6 @@
   class="hidden"
   #file
   type="file"
-  capture="capture"
   accept="image/*"
   (change)="uploadFile($event)"
   [(ngModel)]="inputImage"
