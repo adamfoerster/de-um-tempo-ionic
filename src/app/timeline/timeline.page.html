@@ -6,7 +6,7 @@
     <ion-title>Timeline</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content *ngIf="meeting$ | async as meetings" class="ion-padding">
+<ion-content class="ion-padding">
   <hero-loader
     *ngIf="isAdmin | async"
     moduleName="src/app/post-form/post-form.module#PostFormPageModule"
@@ -20,38 +20,39 @@
       </p>
     </ion-card-content>
   </ion-card>
-  <div *ngFor="let meeting of meetings" class="timecont">
-    <ion-card
-      class="example-card"
-      mode="ios"
-      (deferLoad)="loadImg(meeting.photo)"
-    >
-      <div class="spinner" *ngIf="meeting.photo">
-        <ion-spinner *ngIf="!loadedImgs.includes(meeting.photo)"></ion-spinner>
-      </div>
-      <img
-        *ngIf="checkImg(meeting.photo)"
-        [src]="meeting.photo"
-        [alt]="makeDate(meeting.id) | date: 'dd/MM/yyyy'"
-        (load)="loadImg(meeting.photo)"
-      />
-
-      <ion-card-header>
-        <ion-card-title>{{
-          makeDate(meeting.id) | date: 'dd/MM/yyyy'
-        }}</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p [innerHTML]="meeting.message"></p>
-        <app-music [id]="meeting.songId"></app-music>
-      </ion-card-content>
-    </ion-card>
-  </div>
-</ion-content>
-<ion-content *ngIf="!(meeting$ | async)">
-  <br />
-  <br />
-  <div class="center">
-    <ion-spinner></ion-spinner>
-  </div>
+  <ng-container *ngIf="meeting$ | async as meetings">
+    <div *ngFor="let meeting of meetings" class="timecont">
+      <ion-card
+        class="example-card"
+        mode="ios"
+        (deferLoad)="loadImg(meeting.photo)"
+      >
+        <div class="spinner" *ngIf="meeting.photo">
+          <ion-spinner *ngIf="!loadedImgs.includes(meeting.photo)"></ion-spinner>
+        </div>
+        <img
+          *ngIf="checkImg(meeting.photo)"
+          [src]="meeting.photo"
+          [alt]="makeDate(meeting.id) | date: 'dd/MM/yyyy'"
+          (load)="loadImg(meeting.photo)"
+        />
+  
+        <ion-card-header>
+          <ion-card-title>{{
+            makeDate(meeting.id) | date: 'dd/MM/yyyy'
+          }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <p [innerHTML]="meeting.message"></p>
+          <app-music [id]="meeting.songId"></app-music>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </ng-container>
+  <ion-infinite-scroll threshold="300px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Carregando reuniões anteriores...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

@@ -1,7 +1,20 @@
 import { AngularFireStorage } from '@angular/fire/storage';
 import { Injectable } from '@angular/core';
-import { Observable, empty, of, combineLatest, Subject, from } from 'rxjs';
-import { shareReplay, tap, map, first, switchMap } from 'rxjs/operators';
+import {
+  Observable,
+  of,
+  combineLatest,
+  Subject,
+  from,
+  BehaviorSubject
+} from 'rxjs';
+import {
+  shareReplay,
+  tap,
+  map,
+  first,
+  switchMap
+} from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { auth } from 'firebase';
 import { HttpClient } from '@angular/common/http';
@@ -18,15 +31,25 @@ import {
   FromUser,
   Photos
 } from './interfaces';
-import { UploadTask } from '@angular/fire/storage/interfaces';
 import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceService {
-  meeting$: Observable<Meeting[]>;
+  _meeting = new BehaviorSubject([]);
   selectedPhoto$: Subject<string> = new Subject();
   loading: string[] = [];
+  memo = [];
+  lastMeetingDoc;
+
+  get meeting$() {
+    return this._meeting.asObservable().pipe(
+      map(meets => {
+        this.memo = [...this.memo, ...meets];
+        return this.memo;
+      })
+    );
+  }
 
   get user() {
     return this.afAuth.user.pipe(shareReplay(1));
@@ -44,10 +67,6 @@ export class ServiceService {
     public afAuth: AngularFireAuth,
     private router: Router
   ) {
-    this.meeting$ = this.db
-      .collection<Meeting>('meetings', ref => ref.orderBy('id', 'desc'))
-      .valueChanges();
-
     this.selectedPhoto$.subscribe(console.log);
 
     this.afAuth.authState.subscribe(user => {
@@ -59,12 +78,45 @@ export class ServiceService {
     });
   }
 
+  mapWithRef(i) {
+    const data = i.payload.doc.data();
+    return { ref: i.payload.doc, ...data };
+  }
+
   postMeeting(meeting: Meeting) {
     console.log(meeting);
     return this.db
       .collection('meetings')
       .doc(meeting.id.toString())
       .set(meeting);
+  }
+
+  loadMeetings(docref: string = null) {
+    if (!docref) {
+      return this.db
+        .collection<Meeting>('meetings', ref =>
+          ref.orderBy('id', 'desc').limit(3)
+        )
+        .snapshotChanges()
+        .pipe(
+          first(),
+          map(items => items.map(i => this.mapWithRef(i)))
+        )
+        .subscribe(m => this._meeting.next(m));
+    }
+    return this.db
+      .collection<Meeting>('meetings', ref =>
+        ref
+          .orderBy('id', 'desc')
+          .startAfter(docref)
+          .limit(3)
+      )
+      .snapshotChanges()
+      .pipe(
+        first(),
+        map(items => items.map(i => this.mapWithRef(i)))
+      )
+      .subscribe(m => this._meeting.next(m));
   }
 
   fetchBook(bookName: string): Observable<Book> {
@@ -375,10 +427,13 @@ export class ServiceService {
       first(),
       switchMap(([photos, email]) => {
         if (!photos) {
-          return this.db.collection('photos').doc(email).set({
-            email,
-            photos: [`photos/${filePath}`]
-          });
+          return this.db
+            .collection('photos')
+            .doc(email)
+            .set({
+              email,
+              photos: [`photos/${filePath}`]
+            });
         }
         return this.db
           .collection('photos')
@@ -388,7 +443,7 @@ export class ServiceService {
             photos: [...photos.photos, `photos/${filePath}`]
           });
       }),
-      first(),
+      first()
     );
   }
 
