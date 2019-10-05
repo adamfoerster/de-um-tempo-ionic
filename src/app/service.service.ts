@@ -371,6 +371,7 @@ export class ServiceService {
       { id: '2Timothy', name: '2a Timóteo' },
       { id: 'Titus', name: 'Tito' },
       { id: 'Philemon', name: 'Filemon' },
+      { id: 'Hebrews', name: 'Hebreus'},
       { id: 'James', name: 'Tiago' },
       { id: '1Peter', name: '1a Pedro' },
       { id: '2Peter', name: '2a Pedro' },

@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { Observable, empty } from 'rxjs';
-import { map, first, switchMap } from 'rxjs/operators';
+import { Observable, empty, of } from 'rxjs';
+import { map, first, switchMap, tap } from 'rxjs/operators';
 
 import { ServiceService } from '../service.service';
 import { Chapter, BookListItem, Verse, Reference } from '../interfaces';
@@ -13,7 +13,7 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./bible.page.scss']
 })
 export class BiblePage implements OnInit {
-  passage$: Observable<Chapter>;
+  passage$: Observable<Chapter> = of({ chapter: [], chapter_nr: 1 });
   chapter$: Observable<Chapter[]>;
   books: BookListItem[] = [];
   selectedChapter = 103;
@@ -27,14 +27,21 @@ export class BiblePage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.read(this.selectedBook);
+    this.randomChapter();
     this.books = this.service.getBooks();
   }
 
-  read(bookName) {
+  read(bookName, random = false) {
     this.selectedBook = bookName;
     this.resetVerses();
-    this.chapter$ = this.service.getBook(bookName).pipe(map(book => book.book));
+    this.chapter$ = this.service.getBook(bookName).pipe(
+      map(book => book.book),
+      tap(chpts => {
+        if (random) {
+          this.selectedChapter = Math.floor(Math.random() * chpts.length);
+        }
+      })
+    );
     this.passage$ = this.service.getChapter(bookName, this.selectedChapter);
   }
 
@@ -79,6 +86,12 @@ export class BiblePage implements OnInit {
           alert.onDidDismiss().then(_ => this.router.navigate(['login']));
         });
     });
+  }
+
+  randomChapter() {
+    const books = this.service.getBooks();
+    const rdn = Math.floor(Math.random() * (books.length - 1));
+    this.read(books[rdn].id, true);
   }
 
   sortVerses(curr: Verse, prev: Verse): number {

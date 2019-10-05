@@ -11,7 +11,7 @@
         <ion-col>
           <ion-select #bookinput
             placeholder="Livro"
-            value="Psalms"
+            [(ngModel)]="selectedBook"
             class="col70"
             (ionChange)="selectedChapter=1;read(bookinput.value)">
             <ion-select-option *ngFor="let book of books"
@@ -21,13 +21,13 @@
           </ion-select>
         </ion-col>
         <ion-col size="3">
-          <ion-select *ngIf="chapter$|async as chapters"
+          <ion-select
             #chapterInput
             placeholder="Capítulo"
-            [value]="selectedChapter"
+            [(ngModel)]="selectedChapter"
             class="col30"
             (ionChange)="selectedChapter=$event.detail.value;read(bookinput.value)">
-            <ion-select-option *ngFor="let chapter of chapters"
+            <ion-select-option *ngFor="let chapter of chapter$|async as chapters"
               [value]="chapter.chapter_nr">
               {{chapter.chapter_nr}}
             </ion-select-option>
