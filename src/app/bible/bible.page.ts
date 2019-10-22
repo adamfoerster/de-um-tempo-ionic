@@ -38,7 +38,7 @@ export class BiblePage implements OnInit {
       map(book => book.book),
       tap(chpts => {
         if (random) {
-          this.selectedChapter = Math.floor(Math.random() * chpts.length);
+          this.selectedChapter = Math.floor(Math.random() * chpts.length) + 1;
         }
       })
     );
@@ -90,7 +90,7 @@ export class BiblePage implements OnInit {
 
   randomChapter() {
     const books = this.service.getBooks();
-    const rdn = Math.floor(Math.random() * (books.length - 1));
+    const rdn = Math.floor(Math.random() * (books.length)) + 1;
     this.read(books[rdn].id, true);
   }
 
