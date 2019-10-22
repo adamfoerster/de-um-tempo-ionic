@@ -6,8 +6,12 @@
       </ion-header>
       <ion-content>
         <br />
-        <div *ngIf="(user | async) as user" class="center">
-          <img [src]="user.photoURL || 'http://lorempixel.com/200/200/cats'" width="50%" style="border-radius:50%" />
+        <div *ngIf="user | async as user" class="center">
+          <img
+            [src]="user.photoURL || 'http://lorempixel.com/200/200/cats'"
+            width="50%"
+            style="border-radius:50%"
+          />
           <h1 style="color:var(--ion-color-light)">{{ user.displayName }}</h1>
           <em style="color:var(--ion-color-light)">{{ user.email }}</em> <br />
           <br />
@@ -50,7 +54,7 @@
               ><span class="color-medium">Login</span>
             </ion-item>
             <ion-item
-              *ngIf="(user | async)"
+              *ngIf="user | async"
               (click)="logout()"
               class="pointer item"
             >

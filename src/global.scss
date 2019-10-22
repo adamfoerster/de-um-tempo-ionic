@@ -105,7 +105,7 @@
     --color: var(--ion-color-medium);
   }
   ion-item {
-    --background: var(--ion-color-primary-light);
+    --background: var(--ion-color-light);
     --color: var(--ion-color-medium);
     color: var(--ion-color-medium);
     a {
@@ -143,4 +143,11 @@
 }
 .timecont .card-content-md p {
   font-size: 1.2em;
+}
+
+ion-menu-toggle ion-item {
+  --background: var(--ion-color-medium) !important;
+}
+ion-menu ion-content {
+  --background: var(--ion-color-medium) !important;
 }

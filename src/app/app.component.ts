@@ -12,7 +12,9 @@ import { Router } from '@angular/router';
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styles: [
-    `.color-medium { color: #fff; }`
+    `
+      .color-medium { color: #fff; }
+    `
   ]
 })
 export class AppComponent implements OnInit {
